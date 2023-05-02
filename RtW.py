@@ -5,10 +5,6 @@ gi.require_version("Adw", "1")
 
 from gi.repository import Gtk, Adw, Gio, Pango, Gdk
 
-# For code optimization by avoiding duplicate settings classes
-# Adds org.gnome.shell because the extension classes need it and
-# org.gnome.desktop.interface for accent colors.
-known_schemas = {}
 _ = gettext.gettext
 
 ACCENT_BUTTON_CSS = b"""
@@ -28,6 +24,7 @@ ACCENT_BUTTON_CSS = b"""
   border-radius: 9999px;
 }
 """
+
 
 class SettingObject:
     def __init__(self, schema: str, key: str):
@@ -296,19 +293,3 @@ class SpinButtonRow(ActionRow):
 #             Pango.FontMap.get_family(font)
 #         )
 #         Pango.FontMap.load_font(font)
-
-
-class rThemeAccentButton(Gtk.Button):
-    def __init__(self):
-        Gtk.Button.__init__(self)
-        self.set_halign(Gtk.Align.CENTER)
-        self.set_valign(Gtk.Align.CENTER)
-        self.set_size_request(30, 30)
-
-        css_provider = Gtk.CssProvider()
-        css_provider.load_from_data(ACCENT_BUTTON_CSS)
-        Gtk.StyleContext.add_provider_for_display(
-            Gdk.Display.get_default(),
-            css_provider,
-            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
-        )

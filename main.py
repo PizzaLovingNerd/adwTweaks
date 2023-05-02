@@ -3,17 +3,20 @@ import gettext
 import rthemelib
 import RtW
 import RtU
+import rThemeAccent
 
 _ = gettext.gettext
 
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
-from gi.repository import Gtk, Adw
+from gi.repository import Gtk, Adw, Gdk
+
 
 class Application(Adw.Application):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.window = TweaksWindow()
+        rThemeAccent.load_accent_css()
 
     def do_activate(self):
         self.window.set_application(self)
@@ -58,17 +61,9 @@ class TweaksWindow(Adw.Window):
                 RtW.DropdownItems.new_same_items(rthemelib.get_theme_list()),
             )
         )
-        self.rtheme_group.add(
-            RtW.DropdownRow(
-                _("rTheme Variant"),
-                _("Variant of the color scheme."),
-                "io.risi.rtheme", "variant-name",
-                RtW.DropdownItems.new_same_items([v.name for v in rthemelib.get_current_theme().variants]),
-            )
-        )
-        self.rtheme_group.add(
-            RtW.rThemeAccentButton()
-        )
+        accent_row = Adw.ActionRow(activatable=True)
+        accent_row.set_child(rThemeAccent.AccentStack())
+        self.rtheme_group.add(accent_row)
         self.rtheme_group.add(
             RtW.DropdownRow(
                 _("Theme Styling"),
@@ -302,7 +297,7 @@ class TweaksWindow(Adw.Window):
                         _("No mouse acceleration. Less precise for short distances but better for things like FPS "
                           "games."),
                         _("Adaptive mouse acceleration. Adapts the acceleration based on the movement speed."),
-                        _("Default mouse acceleration (Recommended). Let's the mouse decide it's own acceleration."),
+                        _("Default mouse acceleration (recommended). Let's the mouse decide it's own acceleration."),
                     ]
                 )
             )
