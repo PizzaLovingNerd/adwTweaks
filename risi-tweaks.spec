@@ -45,7 +45,7 @@ install -m 755 risi-tweaks-bin %{buildroot}%{_bindir}/risi-tweaks
 %files
 # %license add-license-file-here
 # %doc add-docs-here
-%{_datadir}/risi-tweaks/*.py
+%{_datadir}/risiTweaks/*.py
 %{_datadir}/applications/io.risi.Tweaks.desktop
 %{_datadir}/icons/hicolor/scalable/apps/io.risi.Tweaks.svg
 %{_bindir}/risi-tweaks
