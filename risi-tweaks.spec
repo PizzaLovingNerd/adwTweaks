@@ -36,11 +36,11 @@ cp -a risi-tweaks %{buildroot}%{_datadir}/risi-tweaks
 cp io.risi.Tweaks.desktop %{buildroot}%{_datadir}/applications/io.risi.Tweaks.desktop
 cp io.risi.Tweaks.svg %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/io.risi.Tweaks.svg
 
-cat > risi-tweaks <<EOF
+cat > risi-tweaks-bin <<EOF
 #!/bin/sh
 /usr/bin/env python %{_datadir}/risiTweaks/__main__.py
 EOF
-install -m 755 risi-tweaks %{buildroot}%{_bindir}
+install -m 755 risi-tweaks-bin %{buildroot}%{_bindir}/risi-tweaks
 
 %files
 # %license add-license-file-here
