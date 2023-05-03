@@ -38,7 +38,7 @@ cp io.risi.Tweaks.svg %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/io.ris
 
 cat > risi-tweaks <<EOF
 #!/bin/sh
-/env/bin/python3 %{_datadir}/risiTweaks/__main__.py
+/usr/bin/env python %{_datadir}/risiTweaks/__main__.py
 EOF
 install -m 755 risi-tweaks %{buildroot}%{_bindir}
 
