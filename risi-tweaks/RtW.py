@@ -95,7 +95,6 @@ class DropdownItems:
     @classmethod
     def new_lowercase_items(cls, items: list, item_descriptions=None):
         if item_descriptions is None:
-            print(items, [item.lower() for item in items])
             return cls(items, [item.lower() for item in items])
         else:
             return cls(items, [item.lower() for item in items], item_descriptions)
@@ -114,6 +113,12 @@ class DropdownRow(ActionRow):
         self.set_main_widget(self.dropdown)
         self.select_item()
         self.dropdown.connect("notify::selected", self.on_dropdown_changed)
+
+    def repopulate(self, items: DropdownItems):
+        self.items = items
+        self.dropdown.set_model(Gtk.StringList.new(self.items.translated_items))
+        self.errorless_model = self.dropdown.get_model()
+        self.select_item()
 
     def on_setting_changed(self, *args):
         self.select_item()
@@ -238,22 +243,23 @@ class SpinButtonRow(ActionRow):
             self.spin_button = Gtk.SpinButton.new_with_range(minimum * 100, maximum * 100, step * 100)
         else:
             self.spin_button = Gtk.SpinButton.new_with_range(minimum, maximum, step)
-        self.add_suffix(self.spin_button)
+        self.spin_button.set_vexpand(False)
+        self.spin_button.set_valign(Gtk.Align.CENTER)
+        self.set_main_widget(self.spin_button)
 
         self.value_type = value_type
         # Gets the value type because it could be any of these 3 values
         if self.value_type == "int":
-            self.value = self.setting.get_int(key)
+            self.value = self.settings.get_int(key)
         elif self.value_type == "uint":
-            self.value = self.setting.get_uint(key)
+            self.value = self.settings.get_uint(key)
         elif self.value_type == "double":
-            self.value = self.setting.get_double(key)
+            self.value = self.settings.get_double(key)
         if self.percent is True:
             self.value *= 100
         self.spin_button.set_value(self.value)
 
         self.spin_button.connect("value-changed", self.value_changed)
-        self.set_main_widget(self.spin_button)
 
     def value_changed(self, spin_button):
         self.value = self.spin_button.get_value()
@@ -261,35 +267,47 @@ class SpinButtonRow(ActionRow):
             self.value /= 100
 
         if self.value_type == "int":
-            self.setting.set_int(self.key, self.value)
+            self.settings.set_int(self.key, self.value)
         elif self.value_type == "uint":
-            self.setting.set_uint(self.key, self.value)
+            self.settings.set_uint(self.key, self.value)
         elif self.value_type == "double":
-            self.setting.set_double(self.key, self.value)
+            self.settings.set_double(self.key, self.value)
 
     def on_setting_changed(self, *args):
-        if self.setting.get_double(self.key) != self.spin_button.get_value():
-            new_value = self.setting.get_double(self.key)
+        if self.settings.get_double(self.key) != self.spin_button.get_value():
+            new_value = self.settings.get_double(self.key)
             if self.percent:
                 new_value *= 100
             self.spin_button.set_value(new_value)
 
 
-# TODO: Implement this on Fedora 38
-# class FontRow(ActionRow):
-#     def __init__(self, title: str, subtitle: str, schema: str, key: str):
-#         super().__init__(title, subtitle, schema, key)
-#         self.font_dialog = Gtk.FontChooserDialog()
-#         self.font_dialog.set_title(title)
-#
-#
-#         self.font_button = Gtk.FontDialogButton()
-#         self.font_button.set_use_font(True)
-#         self.font_button.set_use_size(True)
-#
-#     def set_font(self, font):
-#         map = Pango.FontMap.
-#         self.font_dialog.set_font_map(
-#             Pango.FontMap.get_family(font)
-#         )
-#         Pango.FontMap.load_font(font)
+class FontRow(ActionRow):
+    def __init__(self, title: str, subtitle: str, schema: str, key: str):
+        super().__init__(title, subtitle, schema, key)
+        self.font_dialog = Gtk.FontDialog()
+        self.font_dialog.set_title(title)
+        self.font_desc = None
+
+        self.font_button = Gtk.FontDialogButton()
+        self.font_button.set_dialog(self.font_dialog)
+        self.font_button.set_use_font(True)
+        self.font_button.set_use_size(True)
+        self.font_button.set_vexpand(False)
+        self.font_button.set_valign(Gtk.Align.CENTER)
+        self.font_button.connect("notify::font-desc", self.on_font_set)
+        self.set_font(self.settings.get_string(key))
+
+        self.set_main_widget(self.font_button)
+
+    def set_font(self, font):
+        self.font_desc = Pango.FontDescription.from_string(font)
+        self.font_button.set_font_desc(self.font_desc)
+
+    def on_setting_changed(self, *args):
+        if self.settings.get_string(self.key) != self.font_desc.to_string():
+            self.set_font(self.settings.get_string(self.key))
+
+    def on_font_set(self, font_button, *args):
+        self.font_desc = font_button.get_font_desc()
+        if self.settings.get_string(self.key) != self.font_desc.to_string():
+            self.settings.set_string(self.key, self.font_desc.to_string())

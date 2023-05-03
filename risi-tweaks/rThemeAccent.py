@@ -1,7 +1,6 @@
 import gettext
 
 import gi
-import sys
 
 import rthemelib
 
@@ -9,11 +8,11 @@ import RtW
 
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
-from gi.repository import GLib, Gtk, Adw, Gio, Gdk, Graphene
+from gi.repository import Gtk, Adw, Gio, Gdk, Graphene
 
 ACCENT_SUPPORTED_THEMES = ["adwaita", "risi", "classic"]
 
-ACCENT_BUTTON_CSS = b"""
+ACCENT_BUTTON_CSS = """
 .accent-button {
     margin: 3px;
     padding: 0;
@@ -50,7 +49,7 @@ _ = gettext.gettext
 
 def load_accent_css():
     css_provider = Gtk.CssProvider()
-    css_provider.load_from_data(ACCENT_BUTTON_CSS)
+    css_provider.load_from_data(ACCENT_BUTTON_CSS, -1)
     Gtk.StyleContext.add_provider_for_display(
         Gdk.Display.get_default(),
         css_provider,
@@ -148,6 +147,9 @@ class AccentStack(Gtk.Stack):
 
     def theme_changed(self, settings, key):
         if key == "theme-name":
+            self.variants.repopulate(
+                RtW.DropdownItems.new_same_items([v.name for v in rthemelib.get_current_theme().variants])
+            )
             self.set_page()
 
     def set_page(self):
@@ -156,3 +158,4 @@ class AccentStack(Gtk.Stack):
             self.set_visible_child(self.accents)
         else:
             self.set_visible_child(self.variants)
+        self.variants.set_sensitive(not len(rthemelib.get_current_theme().variants) == 1)

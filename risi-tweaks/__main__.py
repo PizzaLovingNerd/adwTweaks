@@ -9,7 +9,7 @@ _ = gettext.gettext
 
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
-from gi.repository import Gtk, Adw, Gdk
+from gi.repository import Gtk, Adw
 
 
 class Application(Adw.Application):
@@ -112,7 +112,69 @@ class TweaksWindow(Adw.Window):
             )
         )
 
-        # Appearance Page
+        # Fonts Group
+        self.fonts_group = Adw.PreferencesGroup()
+        self.fonts_group.set_title(_("Fonts"))
+        self.appearance_page.add(self.fonts_group)
+        self.fonts_group.add(
+            RtW.FontRow(
+                _("Interface Font"),
+                _("This is the primary font used by your system."),
+                "org.gnome.desktop.interface", "font-name",
+            )
+        )
+        self.fonts_group.add(
+            RtW.FontRow(
+                _("Document Font"),
+                _("Font used for viewing documents."),
+                "org.gnome.desktop.interface", "document-font-name",
+            )
+        )
+        self.fonts_group.add(
+            RtW.FontRow(
+                _("Monospace Font"),
+                _("Font used when all the letters need to be the same size. For example, terminals and text editors."),
+                "org.gnome.desktop.interface", "monospace-font-name",
+            )
+        )
+        self.fonts_group.add(
+            RtW.FontRow(
+                _("Legacy Titlebar Font"),
+                _("Font used in the titlebar for apps that don't use header bars (old Gtk apps, non-Gtk apps)."),
+                "org.gnome.desktop.wm.preferences", "titlebar-font",
+            )
+        )
+        self.fonts_group.add(
+            RtW.DropdownRow(
+                _("Font Hinting"),
+                _("Adjusts font so that it lines up with a rasterized grid."),
+                "org.gnome.desktop.interface", "font-hinting",
+                RtW.DropdownItems.new_lowercase_items(
+                    ["None", "Slight", "Medium", "Full"]
+                )
+            )
+        )
+        self.fonts_group.add(
+            RtW.DropdownRow(
+                _("Font Antialiasing"),
+                _("The method of antialiasing used."),
+                "org.gnome.desktop.interface", "font-antialiasing",
+                RtW.DropdownItems(
+                    ["None", "Subpixel (for LCD Screens)", "Standard (Grayscale)"],
+                    ["none", "rgba", "grayscale"]
+                )
+            )
+        )
+        self.fonts_group.add(
+            RtW.SpinButtonRow(
+                _("Font Scaling Factor"),
+                _("The scaling factor for font sizes."),
+                "org.gnome.desktop.interface", "text-scaling-factor",
+                "double", 0.5, 3, 0.05, True
+            )
+        )
+
+        # Layout Page
         self.layout_page = Adw.PreferencesPage()
         self.main_stack.add_titled_with_icon(self.layout_page, "layout_page", _("Layout"),
                                                 "preferences-desktop-display-symbolic")
@@ -336,8 +398,6 @@ class TweaksWindow(Adw.Window):
                 "org.gnome.desktop.peripherals", "disable-while-typing",
             )
         )
-
-
 
 
 if __name__ == "__main__":
