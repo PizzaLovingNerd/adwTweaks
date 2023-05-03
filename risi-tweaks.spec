@@ -1,6 +1,6 @@
 Name:           risi-tweaks
 Version:        38
-Release:        24%{?dist}
+Release:        25%{?dist}
 Summary:        risiOS's Tweak Tool
 
 License:        GPL v3
@@ -32,7 +32,7 @@ mkdir -p %{buildroot}%{_datadir}/risiTweaks
 mkdir -p %{buildroot}%{_datadir}/icons/hicolor/scalable/apps
 mkdir -p %{buildroot}%{_datadir}/applications
 
-cp -a risi-tweaks %{buildroot}%{_datadir}/risi-tweaks
+cp -a risi-tweaks %{buildroot}%{_datadir}/risiTweaks
 cp io.risi.Tweaks.desktop %{buildroot}%{_datadir}/applications/io.risi.Tweaks.desktop
 cp io.risi.Tweaks.svg %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/io.risi.Tweaks.svg
 
