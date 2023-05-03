@@ -28,7 +28,6 @@ The tweak tool for risiOS. Full alternative to GNOME Tweaks
 %install
 
 mkdir -p %{buildroot}%{_bindir}
-mkdir -p %{buildroot}%{_datadir}/risiTweaks
 mkdir -p %{buildroot}%{_datadir}/icons/hicolor/scalable/apps
 mkdir -p %{buildroot}%{_datadir}/applications
 
