@@ -339,7 +339,7 @@ class TweaksWindow(Adw.Window):
                 _("Keybinding Preset (GTK Apps Only)"),
                 _("This modifies some keybindings in GTK apps."),
                 "org.gnome.desktop.interface", "gtk-key-theme",
-                RtW.DropdownItems.new_lowercase_items(
+                RtW.DropdownItems.new_same_items(
                     ["Default", "Emacs"],
                 )
             )
