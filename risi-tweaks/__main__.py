@@ -14,7 +14,7 @@ from gi.repository import Gtk, Adw
 
 class Application(Adw.Application):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super().__init__(*args, application_id="io.risi.Tweaks", **kwargs)
         self.window = TweaksWindow()
         rThemeAccent.load_accent_css()
 
@@ -46,7 +46,8 @@ class TweaksWindow(Adw.Window):
 
         # Appearance Page
         self.appearance_page = Adw.PreferencesPage()
-        self.main_stack.add_titled_with_icon(self.appearance_page, "appearance_page", _("Appearance"), "preferences-desktop-wallpaper-symbolic")
+        self.main_stack.add_titled_with_icon(self.appearance_page, "appearance_page", _("Appearance"),
+                                             "preferences-desktop-wallpaper-symbolic")
 
         # rTheme Group
         self.rtheme_group = Adw.PreferencesGroup()
@@ -84,7 +85,7 @@ class TweaksWindow(Adw.Window):
             RtW.DropdownRow(
                 _("Legacy GTK3/GTK4 Theme"),
                 _("This is the theme used by legacy applications that don't use Libadwaita.\n\nWARNING: "
-                "Changing this away from adw-gtk3/adw-gtk3-dark will remove rTheme support for non-Libadwaita apps."),
+                  "Changing this away from adw-gtk3/adw-gtk3-dark will remove rTheme support for non-Libadwaita apps."),
                 "org.gnome.desktop.interface", "gtk-theme",
                 RtW.DropdownItems.new_same_items(
                     RtU.get_gtk_themes()
@@ -177,7 +178,7 @@ class TweaksWindow(Adw.Window):
         # Layout Page
         self.layout_page = Adw.PreferencesPage()
         self.main_stack.add_titled_with_icon(self.layout_page, "layout_page", _("Layout"),
-                                                "preferences-desktop-display-symbolic")
+                                             "preferences-desktop-display-symbolic")
 
         # Layout Group
         self.layout_group = Adw.PreferencesGroup()
@@ -187,7 +188,7 @@ class TweaksWindow(Adw.Window):
             RtW.SwitchRow(
                 _("Allow Audio Volume Above 100%"),
                 _("This allows you to go above 100% volume in the top bar.\n\nWARNING: this may have an impact on audio "
-                "quality, and potentially could damage your audio hardware."),
+                  "quality, and potentially could damage your audio hardware."),
                 "org.gnome.desktop.sound", "allow-volume-above-100-percent",
             )
         )
@@ -321,7 +322,8 @@ class TweaksWindow(Adw.Window):
 
         # Keyboard and Mouse Page
         self.keyboard_mouse_page = Adw.PreferencesPage()
-        self.main_stack.add_titled_with_icon(self.keyboard_mouse_page, "keyboard_mouse_page", _("Keyboard & Mouse"), "input-keyboard-symbolic")
+        self.main_stack.add_titled_with_icon(self.keyboard_mouse_page, "keyboard_mouse_page", _("Keyboard & Mouse"),
+                                             "input-keyboard-symbolic")
 
         # Keyboard Group
         self.keyboard_group = Adw.PreferencesGroup()

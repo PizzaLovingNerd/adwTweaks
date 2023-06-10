@@ -235,8 +235,8 @@ class DetailedDropdownItem(Adw.ActionRow):
 
 
 class SpinButtonRow(ActionRow):
-    def __init__(self, title: str, subtitle: str | None, schema: str, key: str, value_type: str, minimum: int,
-                 maximum: int, step: int, percent: bool):
+    def __init__(self, title: str, subtitle: str | None, schema: str, key: str, value_type: str, minimum: float,
+                 maximum: float, step: float, percent: bool):
         super().__init__(title, subtitle, schema, key)
         self.percent = percent
         if percent:
