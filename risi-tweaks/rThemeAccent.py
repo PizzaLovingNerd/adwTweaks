@@ -40,7 +40,7 @@ colors = {
     "pink": "#D34166",
     "purple": "#9141ac",
     "brown": "#865e3c",
-    "grey": "#485a6c",
+    "slate": "#485a6c",
 }
 
 rtheme_settings = Gio.Settings.new("io.risi.rtheme")
