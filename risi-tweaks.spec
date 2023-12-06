@@ -1,11 +1,11 @@
-Name:           risi-tweaks
-Version:        38.1
+Name:           adw-tweaks
+Version:        39
 Release:        28%{?dist}
-Summary:        risiOS's Tweak Tool
+Summary:        Libadwaita Tweak Tool forked from risiTweaks
 
 License:        GPL v3
-URL:            https://github.com/risiIndustries/risiTweaksAdw
-Source0:        https://github.com/risiIndustries/risiTweaksAdw/archive/refs/heads/main.tar.gz
+URL:            https://github.com/pizzalovingnerd/adwTweaks
+Source0:        https://github.com/pizzalovingnerd/adwTweaks/archive/refs/heads/main.tar.gz
 
 BuildArch:	noarch
 
@@ -15,8 +15,8 @@ Requires:	    python3-gobject
 Requires:       python3-yaml
 Requires:       rtheme-lib
 
-Conflicts:      risi-tweaks
-Provides:		risi-tweaks
+Conflicts:      adw-tweaks
+Provides:		adw-tweaks
 
 %description
 The tweak tool for risiOS. Full alternative to GNOME Tweaks
@@ -31,23 +31,23 @@ mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_datadir}/icons/hicolor/scalable/apps
 mkdir -p %{buildroot}%{_datadir}/applications
 
-cp -a risi-tweaks %{buildroot}%{_datadir}/risiTweaks
+cp -a adw-tweaks %{buildroot}%{_datadir}/risiTweaks
 cp io.risi.Tweaks.desktop %{buildroot}%{_datadir}/applications/io.risi.Tweaks.desktop
 cp io.risi.Tweaks.svg %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/io.risi.Tweaks.svg
 
-cat > risi-tweaks-bin <<EOF
+cat > adw-tweaks-bin <<EOF
 #!/bin/sh
-/usr/bin/env python %{_datadir}/risiTweaks/__main__.py
+/usr/bin/env python %{_datadir}/risi-tweaks/__main__.py
 EOF
-install -m 755 risi-tweaks-bin %{buildroot}%{_bindir}/risi-tweaks
+install -m 755 adw-tweaks-bin %{buildroot}%{_bindir}/adw-tweaks
 
 %files
 # %license add-license-file-here
 # %doc add-docs-here
-%{_datadir}/risiTweaks/*.py
+%{_datadir}/risi-tweaks/*.py
 %{_datadir}/applications/io.risi.Tweaks.desktop
 %{_datadir}/icons/hicolor/scalable/apps/io.risi.Tweaks.svg
-%{_bindir}/risi-tweaks
+%{_bindir}/adw-tweaks
 
 %changelog
 * Tue May 02 2023 PizzaLovingNerd

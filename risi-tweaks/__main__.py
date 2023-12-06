@@ -1,9 +1,7 @@
 import gi
 import gettext
-import rthemelib
 import RtW
 import RtU
-import rThemeAccent
 
 _ = gettext.gettext
 
@@ -16,7 +14,6 @@ class Application(Adw.Application):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, application_id="io.risi.Tweaks", **kwargs)
         self.window = TweaksWindow()
-        rThemeAccent.load_accent_css()
 
     def do_activate(self):
         self.window.set_application(self)
@@ -26,7 +23,7 @@ class Application(Adw.Application):
 class TweaksWindow(Adw.Window):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.set_title(_("risiTweaks"))
+        self.set_title(_("adwTeaks"))
         self.set_default_size(800, 600)
         self.set_icon_name("io.risi.Tweaks")
 
@@ -49,22 +46,11 @@ class TweaksWindow(Adw.Window):
         self.main_stack.add_titled_with_icon(self.appearance_page, "appearance_page", _("Appearance"),
                                              "preferences-desktop-wallpaper-symbolic")
 
-        # rTheme Group
-        self.rtheme_group = Adw.PreferencesGroup()
-        self.rtheme_group.set_title(_("rTheme"))
-        self.appearance_page.add(self.rtheme_group)
-        self.rtheme_group.add(
-            RtW.DropdownRow(
-                _("rTheme"),
-                _("The current color scheme used by rTheme."),
-                "io.risi.rtheme",
-                "theme-name",
-                RtW.DropdownItems.new_same_items(rthemelib.get_theme_list()),
-            )
-        )
-        accent_row = Adw.ActionRow(activatable=True)
-        accent_row.set_child(rThemeAccent.AccentStack())
-        self.rtheme_group.add(accent_row)
+
+        # Other Theming Group
+        self.other_theming_group = Adw.PreferencesGroup()
+        self.other_theming_group.set_title(_("Theming"))
+        self.appearance_page.add(self.other_theming_group)
         self.rtheme_group.add(
             RtW.DropdownRow(
                 _("Theme Styling"),
@@ -76,11 +62,6 @@ class TweaksWindow(Adw.Window):
                 ),
             )
         )
-
-        # Other Theming Group
-        self.other_theming_group = Adw.PreferencesGroup()
-        self.other_theming_group.set_title(_("Other Theming"))
-        self.appearance_page.add(self.other_theming_group)
         self.other_theming_group.add(
             RtW.DropdownRow(
                 _("Legacy GTK3/GTK4 Theme"),

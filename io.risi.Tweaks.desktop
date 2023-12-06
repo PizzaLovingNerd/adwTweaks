@@ -1,8 +1,8 @@
 [Desktop Entry]
-Name=risiTweaks
-Comment=Tweak advanced risiOS settings
+Name=adwTweaks
+Comment=Tweak advanced settings
 Icon=io.risi.Tweaks
-Exec=risi-tweaks
+Exec=adw-tweaks
 Terminal=false
 Type=Application
 Categories=GNOME;GTK;Utility;
