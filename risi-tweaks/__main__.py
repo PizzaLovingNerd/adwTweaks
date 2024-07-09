@@ -51,7 +51,7 @@ class TweaksWindow(Adw.Window):
         self.other_theming_group = Adw.PreferencesGroup()
         self.other_theming_group.set_title(_("Theming"))
         self.appearance_page.add(self.other_theming_group)
-        self.rtheme_group.add(
+        self.other_theming_group.add(
             RtW.DropdownRow(
                 _("Theme Styling"),
                 _("This is the same as the light and dark theme options in GNOME Control Center."),
@@ -65,8 +65,7 @@ class TweaksWindow(Adw.Window):
         self.other_theming_group.add(
             RtW.DropdownRow(
                 _("Legacy GTK3/GTK4 Theme"),
-                _("This is the theme used by legacy applications that don't use Libadwaita.\n\nWARNING: "
-                  "Changing this away from adw-gtk3/adw-gtk3-dark will remove rTheme support for non-Libadwaita apps."),
+                _("This is the theme used by legacy applications that don't use Libadwaita."),
                 "org.gnome.desktop.interface", "gtk-theme",
                 RtW.DropdownItems.new_same_items(
                     RtU.get_gtk_themes()
